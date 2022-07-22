@@ -374,7 +374,14 @@ generate_success_response!(BasicResponse, (200, Ok));
 
 // Generate traits defining a "from" function for each of these status types.
 // The error response then impls these traits for each status type they mention.
-generate_error_traits!(Internal, BadRequest, NotFound);
+generate_error_traits!(
+    BadRequest,
+    NotFound,
+    PayloadTooLarge,
+    UnsupportedMediaType,
+    Internal,
+    InsufficientStorage
+);
 
 // Generate an error response that only has options for 400 and 500.
 generate_error_response!(BasicError, (400, BadRequest), (500, Internal));
