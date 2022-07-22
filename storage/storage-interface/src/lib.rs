@@ -546,15 +546,13 @@ impl MoveStorage for &dyn DbReader {
     }
 
     fn fetch_config_by_version(&self, config_id: ConfigID, version: Version) -> Result<Vec<u8>> {
-        let config_value_option = self
-            .get_state_value_with_proof_by_version(
-                &StateKey::AccessPath(AccessPath::new(
-                    CORE_CODE_ADDRESS,
-                    access_path_for_config(config_id).path,
-                )),
-                version,
-            )?
-            .0;
+        let config_value_option = self.get_state_value_by_version(
+            &StateKey::AccessPath(AccessPath::new(
+                CORE_CODE_ADDRESS,
+                access_path_for_config(config_id).path,
+            )),
+            version,
+        )?;
         config_value_option
             .and_then(|x| x.maybe_bytes)
             .ok_or_else(|| anyhow!("no config {} found in aptos root account state", config_id))
